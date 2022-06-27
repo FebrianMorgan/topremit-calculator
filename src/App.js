@@ -5,6 +5,7 @@ import { CalculatorProvider } from "./useCalculator";
 import { css } from "@emotion/css";
 import { SelectCountry } from "./Components/SelectCountry";
 import { MethodRadioButton } from "./Components/MethodRadioButton";
+import { InputField } from "./Components/InputField";
 
 const styled = {
   root: css`
@@ -30,6 +31,8 @@ function App() {
           <div className="container">
             <SelectCountry />
             <MethodRadioButton />
+            <InputField type={"send"} />
+            <InputField type={"receive"} />
           </div>
         </div>
       </CalculatorProvider>

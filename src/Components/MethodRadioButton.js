@@ -1,11 +1,12 @@
 import { useRadio, useRadioGroup, Box, HStack } from "@chakra-ui/react";
 import { css } from "@emotion/css";
-import { button, useCalculator } from "../useCalculator";
+import { useCalculator } from "../useCalculator";
 
 const styled = {
   root: css`
     display: flex;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 0 16px;
     .radio-button {
       color: #8295b5;
       cursor: pointer;
@@ -13,6 +14,7 @@ const styled = {
       border-radius: 6.25rem;
       font-size: 14px;
       padding: 7px 14px;
+      margin-bottom: 16px;
     }
   `,
 };
@@ -42,8 +44,8 @@ function RadioCard(props) {
 }
 
 function MethodRadioButton() {
-  // const options = ["Bank Transfer", "Cash Pickup", "E-wallet"];
-  const { button } = useCalculator();
+  // Button too small
+  const { methodButton } = useCalculator();
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "framework",
@@ -55,7 +57,7 @@ function MethodRadioButton() {
 
   return (
     <div className={styled.root} {...group}>
-      {button.map((value) => {
+      {methodButton.map((value) => {
         const radio = getRadioProps({ value });
         return (
           <RadioCard key={value} {...radio}>

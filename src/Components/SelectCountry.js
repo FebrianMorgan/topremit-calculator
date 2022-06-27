@@ -14,6 +14,7 @@ const styled = {
 function SelectCountry() {
   const { country, updateSelectedCountry } = useCalculator();
   return (
+    // {Select width and height 366px 62px}
     <Select
       placeholder="Select Destination Country"
       className={styled.root}

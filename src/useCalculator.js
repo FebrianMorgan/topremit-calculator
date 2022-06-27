@@ -4,7 +4,8 @@ import axios from "axios";
 const defaultValue = {
   progress: 30,
   country: [],
-  button: ["Bank Transfer", "Cash Pickup", "E-wallet"],
+  methodButton: ["Bank Transfer", "Cash Pickup", "E-wallet"],
+  isoCode: "SGD",
   updateSelectedCountry: () => {},
 };
 
@@ -13,11 +14,12 @@ const CalculatorContext = React.createContext(defaultValue);
 function CalculatorProvider({ children }) {
   const [progress, setProgress] = React.useState(30);
   const [country, setCountry] = React.useState([]);
-  const [button, setButton] = React.useState([
+  const [methodButton, setMethodButton] = React.useState([
     "Bank Transfer",
     "Cash Pickup",
     "E-wallet",
   ]);
+  const [isoCode, setIsoCode] = React.useState("SGD");
 
   React.useEffect(() => {
     axios
@@ -35,6 +37,7 @@ function CalculatorProvider({ children }) {
 
   function updateSelectedCountry(e) {
     if (e.target.value === "") return;
+    setIsoCode(e.target.value);
     axios
       .get("https://frontend-test.topremit.com/api/services", {
         params: {
@@ -51,12 +54,18 @@ function CalculatorProvider({ children }) {
           });
         }
         const newData = data.map((v) => v.name);
-        setButton(newData);
+        setMethodButton(newData);
       });
   }
   return (
     <CalculatorContext.Provider
-      value={{ progress, country, updateSelectedCountry, button }}
+      value={{
+        progress,
+        country,
+        updateSelectedCountry,
+        methodButton,
+        isoCode,
+      }}
     >
       {children}
     </CalculatorContext.Provider>
