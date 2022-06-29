@@ -1,33 +1,68 @@
 import { css } from "@emotion/css";
-import React from "react";
-import { Select } from "@chakra-ui/react";
-import { country, useCalculator } from "../useCalculator";
+import React, { useEffect } from "react";
+import { useCalculator } from "../useCalculator";
+import { useFormContext } from "react-hook-form";
 
 const styled = {
   root: css`
-    color: #8295b5;
-    margin-top: 25px;
-    margin-bottom: 24px;
-    border-radius: 8px;
+    margin: 25px 0 24px;
+    position: relative;
+    &:after {
+      content: "ˇ";
+      font-size: 2.5rem;
+      top: 13px;
+      right: 18px;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .select-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      padding: 0 16px;
+      width: 100%;
+      height: 62px;
+      border: 1px solid #d5e0e8;
+      -webkit-appearance: none;
+      appearance: none;
+    }
   `,
 };
 function SelectCountry() {
-  const { country, updateSelectedCountry } = useCalculator();
+  // const countries = useCountry();
+  const { countries, updateSelectedCountry, fetchServices } = useCalculator();
+  const { register, setValue, getValues } = useFormContext();
+
+  React.useEffect(() => {
+    setValue("country", "SGP");
+    fetchServices(getValues("country"));
+  }, []);
+
   return (
-    // {Select width and height 366px 62px}
-    <Select
-      placeholder="Select Destination Country"
-      className={styled.root}
-      onChange={(e) => updateSelectedCountry(e)}
-    >
-      {country.map((v) => {
-        return (
-          <option key={v.iso_code} value={v.iso_code}>
-            {v.name}
-          </option>
-        );
-      })}
-    </Select>
+    <div className={styled.root}>
+      <select
+        {...register("country", {
+          onChange: (e) => {
+            updateSelectedCountry(e);
+          },
+        })}
+        value={getValues("country")}
+        className="select-container"
+      >
+        <option value="" disabled selected>
+          Select Destination Country
+        </option>
+        {countries.map((v) => {
+          return (
+            <option key={v.name} value={v.iso_code}>
+              {v.name}
+            </option>
+          );
+        })}
+      </select>
+    </div>
   );
 }
 

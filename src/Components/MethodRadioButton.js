@@ -1,6 +1,8 @@
-import { useRadio, useRadioGroup, Box, HStack } from "@chakra-ui/react";
+import { useRadio, useRadioGroup, Box } from "@chakra-ui/react";
 import { css } from "@emotion/css";
+import React from "react";
 import { useCalculator } from "../useCalculator";
+import { useController, useFormContext, Controller } from "react-hook-form";
 
 const styled = {
   root: css`
@@ -18,7 +20,6 @@ const styled = {
     }
   `,
 };
-
 function RadioCard(props) {
   const { getInputProps, getCheckboxProps } = useRadio(props);
 
@@ -30,11 +31,12 @@ function RadioCard(props) {
       <input {...input} />
       <Box
         {...checkbox}
-        className="radio-button"
-        _checked={{
+        className={`radio-button`}
+        _focus={{
           bg: "#f4faff",
           color: "#30a6ff",
-          border: "none",
+          border: "1px solid #f4faff",
+          fontWeight: "700",
         }}
       >
         {props.children}
@@ -43,9 +45,9 @@ function RadioCard(props) {
   );
 }
 
-function MethodRadioButton() {
-  // Button too small
-  const { methodButton } = useCalculator();
+function MethodRadioButton({ onChange }) {
+  const { methodButton, updateSelectedMethod, selectedMethodId } =
+    useCalculator();
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: "framework",
@@ -55,13 +57,23 @@ function MethodRadioButton() {
 
   const group = getRootProps();
 
+  function handleChange(value) {
+    onChange(value);
+    updateSelectedMethod(value);
+  }
+
   return (
     <div className={styled.root} {...group}>
       {methodButton.map((value) => {
         const radio = getRadioProps({ value });
         return (
-          <RadioCard key={value} {...radio}>
-            {value}
+          <RadioCard
+            {...radio}
+            key={value.id}
+            value={value.id}
+            onChange={(e) => handleChange(e.target.value)}
+          >
+            {value.name}
           </RadioCard>
         );
       })}

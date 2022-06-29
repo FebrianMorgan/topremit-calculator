@@ -1,5 +1,7 @@
 import { css } from "@emotion/css";
 import { useCalculator } from "../useCalculator";
+import React from "react";
+import { useFormContext } from "react-hook-form";
 
 const styled = {
   root: css`
@@ -12,44 +14,29 @@ const styled = {
     border: 1px solid #d5e0e8;
     margin: 12px 0;
 
-    .input-test {
+    .input-container {
       padding: 0 16px;
       margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 366px;
+      width: 100%;
       height: 60px;
-      border-radius: 8px 0px 0px 8px;
-    }
-
-    .input-addon {
-      color: #2e4865;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
-      width: 66px;
-      height: 60px;
-      border-left: 1px solid #d5e0e8;
+      border-radius: 8px;
     }
   `,
 };
 
-function InputField({ type }) {
-  const { isoCode } = useCalculator();
-  const placeholder = type === "send" ? "You send" : "Recipient gets";
-  const value = type === "send" ? "IDR" : isoCode;
+function InputField({ text, name }) {
+  const { register, getValues } = useFormContext();
+  const placeholder = text;
+
   return (
     <>
       <div className={styled.root}>
         <input
-          placeholder={placeholder}
+          {...register(name)}
           type="text"
-          className="input-test"
+          placeholder={placeholder}
+          className="input-container"
         ></input>
-        <div className="input-addon">{value}</div>
       </div>
     </>
   );

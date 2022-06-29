@@ -1,0 +1,11 @@
+1. Button blm dibawah
+2. back button di header
+3. progress bar blm berfungsi
+4. component page 2 dan 3 
+5. modal setelah submit
+6. format number 3 angka koma
+
+7. radio ga langsung centang
+8. input ga jalan
+9. quotation menggila
+10. useform di page lain
